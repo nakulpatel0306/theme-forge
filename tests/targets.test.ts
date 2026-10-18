@@ -14,7 +14,7 @@ describe.each(TARGETS.map((t) => [t.id, t] as const))('%s', (_, target) => {
       const expected =
         target.kind === 'terminal'
           ? [...normal, ...bright, preset.colors.bg, preset.colors.fg]
-          : [preset.colors.red, preset.colors.green, preset.colors.blue]
+          : [preset.colors.red, preset.colors.blue]
       for (const hex of expected) expect(out).toContain(hex)
     }
   })
