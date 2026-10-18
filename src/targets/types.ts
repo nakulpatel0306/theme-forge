@@ -9,7 +9,10 @@ export type Target = {
   path: (slug: string) => string
   // The one line the user adds to their own config to switch the theme on
   setup: (slug: string) => string
+  // Readable text shown in the web app; also the file itself unless `binary` is set
   render: (palette: Palette, slug: string) => string
+  // For packaged outputs (a .vsix is a zip); `render` then is only a preview
+  binary?: (palette: Palette, slug: string) => Uint8Array
 }
 
 export const header = (palette: Palette, comment = '#') =>

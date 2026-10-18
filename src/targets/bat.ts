@@ -1,30 +1,6 @@
-import { derived, type Slot } from '../core/palette'
-import { SYNTAX, type TokenKind } from '../core/syntax'
+import { derived } from '../core/palette'
+import { tokenRules, type TokenRule } from './textmate'
 import type { Target } from './types'
-
-// TextMate scopes for each token kind. bat (and delta, which uses bat's
-// themes) highlights with these.
-const SCOPES: [TokenKind, string, string?][] = [
-  ['comment', 'comment, punctuation.definition.comment', 'italic'],
-  ['keyword', 'keyword, storage, storage.type, keyword.control', 'italic'],
-  ['function', 'entity.name.function, support.function, meta.function-call variable.function'],
-  ['string', 'string, punctuation.definition.string'],
-  ['number', 'constant.numeric, constant.language, constant.character, constant.other'],
-  ['type', 'entity.name.type, entity.name.class, support.type, support.class, entity.other.inherited-class'],
-  // Explicit empty style, otherwise operators inherit italics from `keyword`
-  ['operator', 'keyword.operator', ''],
-  ['variable', 'variable, variable.parameter, meta.property'],
-  ['punctuation', 'punctuation'],
-]
-
-const MARKUP: [Slot, string, string?][] = [
-  ['green', 'markup.inserted'],
-  ['red', 'markup.deleted, invalid'],
-  ['blue', 'markup.changed, markup.heading, entity.name.section', 'bold'],
-  ['cyan', 'markup.underline.link, string.other.link'],
-  ['yellow', 'entity.name.tag'],
-  ['orange', 'entity.other.attribute-name'],
-]
 
 const escape = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 
@@ -34,14 +10,14 @@ function dict(entries: Record<string, string>, indent: string): string {
     .join('\n')
 }
 
-function rule(name: string, scope: string, foreground: string, fontStyle?: string): string {
+function rule({ name, scope, foreground, fontStyle }: TokenRule): string {
   const settings: Record<string, string> = { foreground }
   if (fontStyle !== undefined) settings.fontStyle = fontStyle
   return `    <dict>
       <key>name</key>
       <string>${escape(name)}</string>
       <key>scope</key>
-      <string>${escape(scope)}</string>
+      <string>${escape(scope.join(', '))}</string>
       <key>settings</key>
       <dict>
 ${dict(settings, '        ')}
@@ -82,8 +58,7 @@ export const bat: Target = {
 ${dict(base, '        ')}
       </dict>
     </dict>
-${SCOPES.map(([kind, scope, style]) => rule(kind, scope, c[SYNTAX[kind]], style)).join('\n')}
-${MARKUP.map(([slot, scope, style]) => rule(scope.split(',')[0], scope, c[slot], style)).join('\n')}
+${tokenRules(palette).map(rule).join('\n')}
   </array>
 </dict>
 </plist>

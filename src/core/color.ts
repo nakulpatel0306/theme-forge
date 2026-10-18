@@ -60,3 +60,9 @@ export function withAlpha(hex: string, alpha: number): string {
   const { r, g, b } = hexToRgb(hex)
   return `rgba(${r}, ${g}, ${b}, ${alpha})`
 }
+
+// #rrggbbaa, for tools (VS Code, Zed) that take alpha inside the hex
+export function withAlphaHex(hex: string, alpha: number): string {
+  const a = Math.round(Math.min(1, Math.max(0, alpha)) * 255)
+  return `${normalizeHex(hex)}${a.toString(16).padStart(2, '0')}`
+}

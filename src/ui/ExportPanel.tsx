@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import type { Palette } from '../core/palette'
 import { encodeShare } from '../core/share'
 import { paletteJson, renderAll } from '../targets/bundle'
-import { downloadText, downloadZip } from './download'
+import { downloadFile, downloadText, downloadZip } from './download'
 import './ExportPanel.css'
 
 const KIND_LABEL = { terminal: 'Terminals', editor: 'Editors', tool: 'CLI tools' } as const
@@ -66,7 +66,7 @@ export function ExportPanel({ palette }: { palette: Palette }) {
             <button className="button small" onClick={() => copy(file.contents, file.target.id)}>
               {copied === file.target.id ? 'Copied' : 'Copy'}
             </button>
-            <button className="button small" onClick={() => downloadText(file.contents, filename)}>
+            <button className="button small" onClick={() => downloadFile(file.data, filename)}>
               Download
             </button>
           </div>

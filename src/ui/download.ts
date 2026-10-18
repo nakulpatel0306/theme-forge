@@ -13,6 +13,11 @@ export function downloadText(text: string, filename: string) {
   downloadBlob(new Blob([text], { type: 'text/plain' }), filename)
 }
 
+export function downloadFile(data: string | Uint8Array, filename: string) {
+  if (typeof data === 'string') return downloadText(data, filename)
+  downloadBlob(new Blob([data.buffer as ArrayBuffer], { type: 'application/octet-stream' }), filename)
+}
+
 // Inside the zip, ".config/" is dropped from paths: dot-folders are hidden in
 // Finder, which makes an unzipped bundle look empty
 export function downloadZip(palette: Palette) {
@@ -23,7 +28,8 @@ export function downloadZip(palette: Palette) {
     [`${slug}/palette.json`]: strToU8(paletteJson(palette)),
   }
   for (const file of files) {
-    entries[`${slug}/${file.path.replace(/^\.config\//, '')}`] = strToU8(file.contents)
+    const data = typeof file.data === 'string' ? strToU8(file.data) : file.data
+    entries[`${slug}/${file.path.replace(/^\.config\//, '')}`] = data
   }
   const zip = zipSync(entries)
   downloadBlob(new Blob([zip.buffer as ArrayBuffer], { type: 'application/zip' }), `${slug}.zip`)

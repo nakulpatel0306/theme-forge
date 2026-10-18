@@ -5,6 +5,7 @@ import { SLOT_INFO, SLOTS, slugify, type Palette } from '../src/core/palette'
 import { PRESETS } from '../src/core/presets'
 import { paletteJson, renderAll, setupNotes } from '../src/targets/bundle'
 import { TARGETS, type Target } from '../src/targets'
+import { findEditors, installExtension } from './editors'
 
 const swatch = (hex: string) => {
   const { r, g, b } = hexToRgb(hex)
@@ -36,16 +37,18 @@ export async function exportTo(palette: Palette, targets: Target[], outDir: stri
   await Bun.write(join(dir, 'README.txt'), setupNotes(palette, files))
   await Bun.write(join(dir, 'palette.json'), paletteJson(palette))
   for (const file of files) {
-    await Bun.write(join(dir, file.path.replace(/^\.config\//, '')), file.contents)
+    await Bun.write(join(dir, file.path.replace(/^\.config\//, '')), file.data)
   }
   console.log(`Wrote ${files.length} themes to ${dir}/`)
 }
 
-type ApplyOptions = { home: string; yes: boolean }
+// installEditors is off when --home points somewhere else: editors keep their
+// extensions in one global place, so a test install must not touch them
+type ApplyOptions = { home: string; yes: boolean; installEditors: boolean }
 
 // Only ever writes the standalone theme files, never a tool's main config.
 // Without --yes it prints what it would do and touches nothing.
-export async function apply(palette: Palette, targets: Target[], { home, yes }: ApplyOptions) {
+export async function apply(palette: Palette, targets: Target[], { home, yes, installEditors }: ApplyOptions) {
   const files = renderAll(palette, targets)
   const stamp = new Date().toISOString().replace(/[:.]/g, '-')
   let changed = 0
@@ -54,7 +57,7 @@ export async function apply(palette: Palette, targets: Target[], { home, yes }: 
     const dest = join(home, file.path)
     const existing = Bun.file(dest)
     const exists = await existing.exists()
-    if (exists && (await existing.text()) === file.contents) {
+    if (exists && sameBytes(new Uint8Array(await existing.arrayBuffer()), file.data)) {
       console.log(`  ${dim('same')}    ~/${file.path}`)
       continue
     }
@@ -66,7 +69,7 @@ export async function apply(palette: Palette, targets: Target[], { home, yes }: 
 
     await mkdir(dirname(dest), { recursive: true })
     if (exists) await rename(dest, backup)
-    await Bun.write(dest, file.contents)
+    await Bun.write(dest, file.data)
   }
 
   if (!yes) {
@@ -74,6 +77,19 @@ export async function apply(palette: Palette, targets: Target[], { home, yes }: 
     return
   }
 
+  const vsix = files.find((f) => f.target.binary && f.path.endsWith('.vsix'))
+  if (vsix && installEditors) {
+    for (const editor of findEditors()) {
+      const ok = installExtension(editor, join(home, vsix.path))
+      console.log(`  ${ok ? 'installed' : 'failed  '}  extension in ${editor.name}`)
+    }
+  }
+
   console.log(`\nWrote ${changed} file(s). To switch each tool over:\n`)
-  for (const file of files) console.log(`  ${bold(file.target.name.padEnd(10))} ${file.setup}`)
+  for (const file of files) console.log(`  ${bold(file.target.name.padEnd(16))} ${file.setup}`)
+}
+
+function sameBytes(a: Uint8Array, b: string | Uint8Array): boolean {
+  const other = typeof b === 'string' ? new TextEncoder().encode(b) : b
+  return a.length === other.length && a.every((byte, i) => byte === other[i])
 }
