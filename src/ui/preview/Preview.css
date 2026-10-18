@@ -120,14 +120,6 @@
   text-overflow: ellipsis;
 }
 
-.tok-comment {
-  font-style: italic;
-}
-
-.tok-keyword {
-  font-style: italic;
-}
-
 .cursor {
   background: var(--d-cursor);
   color: var(--c-bg);

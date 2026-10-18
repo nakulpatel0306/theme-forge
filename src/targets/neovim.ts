@@ -1,13 +1,15 @@
 import { isLight, mix } from '../core/color'
-import { ansi, derived, SLOTS, type Colors, type Slot } from '../core/palette'
-import { SYNTAX } from '../core/syntax'
+import { ansi, derived, SLOTS, type Palette, type Slot } from '../core/palette'
+import { styleOf } from '../core/syntax'
 import { header, type Target } from './types'
 
 type Spec = { fg?: Slot | string; bg?: Slot | string; sp?: Slot | string; bold?: true; italic?: true; undercurl?: true; link?: string }
 
 // Values are palette slot names (emitted as c.<slot>) or literal hex strings
-function groups(colors: Colors, d: ReturnType<typeof derived>): Record<string, Spec> {
-  const s = SYNTAX
+function groups(palette: Palette, d: ReturnType<typeof derived>): Record<string, Spec> {
+  const { colors } = palette
+  const { syntax: s, italicComments, italicKeywords } = styleOf(palette)
+  const italic = (on: boolean): Spec => (on ? { italic: true } : {})
   return {
     Normal: { fg: 'fg', bg: 'bg' },
     NormalFloat: { fg: 'fg', bg: 'surface' },
@@ -44,7 +46,7 @@ function groups(colors: Colors, d: ReturnType<typeof derived>): Record<string, S
     MoreMsg: { fg: 'green' },
     Question: { fg: 'cyan' },
 
-    Comment: { fg: s.comment, italic: true },
+    Comment: { fg: s.comment, ...italic(italicComments) },
     Constant: { fg: s.number },
     String: { fg: s.string },
     Character: { fg: s.string },
@@ -54,7 +56,7 @@ function groups(colors: Colors, d: ReturnType<typeof derived>): Record<string, S
     Identifier: { fg: s.variable },
     Function: { fg: s.function },
     Statement: { fg: s.keyword },
-    Keyword: { fg: s.keyword, italic: true },
+    Keyword: { fg: s.keyword, ...italic(italicKeywords) },
     Conditional: { fg: s.keyword },
     Repeat: { fg: s.keyword },
     Exception: { fg: s.keyword },
@@ -134,7 +136,7 @@ export const neovim: Target = {
       '}',
       '',
       'local groups = {',
-      ...Object.entries(groups(colors, d)).map(([name, spec]) => `  ${key(name)} = ${lua(spec)},`),
+      ...Object.entries(groups(palette, d)).map(([name, spec]) => `  ${key(name)} = ${lua(spec)},`),
       '}',
       '',
       'for name, spec in pairs(groups) do',

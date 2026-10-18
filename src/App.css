@@ -1,6 +1,6 @@
 .app {
   display: grid;
-  grid-template-columns: minmax(20rem, 24rem) minmax(0, 1fr);
+  grid-template-columns: minmax(22rem, 26rem) minmax(0, 1fr);
   grid-template-rows: auto 1fr;
   grid-template-areas:
     'top top'
@@ -118,4 +118,9 @@
 
 .live-badge.is-lost {
   color: var(--c-muted);
+}
+
+.history {
+  display: flex;
+  gap: 0.35rem;
 }

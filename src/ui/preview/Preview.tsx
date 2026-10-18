@@ -1,10 +1,12 @@
+import type { Palette } from '../../core/palette'
 import { EditorPane } from './EditorPane'
 import { TerminalPane } from './TerminalPane'
 import './Preview.css'
 
 // A fake tmux session: Neovim on top, a shell underneath, tmux's bar at the
 // bottom. Every color is a CSS variable, so it repaints as you edit.
-export function Preview({ name }: { name: string }) {
+export function Preview({ palette }: { palette: Palette }) {
+  const { name } = palette
   return (
     <figure className="window" aria-label={`Preview of ${name} in a terminal running Neovim and a shell`}>
       <div className="titlebar">
@@ -16,7 +18,7 @@ export function Preview({ name }: { name: string }) {
         <span className="title">nvim src/core/color.ts</span>
       </div>
       <div className="panes">
-        <EditorPane />
+        <EditorPane palette={palette} />
         <TerminalPane />
       </div>
       <div className="tmux-bar">

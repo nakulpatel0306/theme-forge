@@ -31,7 +31,12 @@ body {
   cursor: pointer;
 }
 
-.button:hover {
+.button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.button:hover:not(:disabled) {
   border-color: var(--c-muted);
 }
 

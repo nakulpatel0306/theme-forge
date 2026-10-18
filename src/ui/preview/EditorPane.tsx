@@ -1,4 +1,5 @@
-import { SYNTAX } from '../../core/syntax'
+import type { Palette } from '../../core/palette'
+import { styleOf } from '../../core/syntax'
 import { highlight } from './highlight'
 
 const FILE = 'src/core/color.ts'
@@ -26,7 +27,9 @@ const DIAGNOSTICS: Record<number, { level: 'warn' | 'error'; text: string }> = {
   14: { level: 'warn', text: "'accent' is declared but never read" },
 }
 
-export function EditorPane() {
+export function EditorPane({ palette }: { palette: Palette }) {
+  const { syntax, italicComments, italicKeywords } = styleOf(palette)
+  const italic = { comment: italicComments, keyword: italicKeywords } as Record<string, boolean>
   return (
     <div className="pane editor">
       <div className="tabline">
@@ -47,7 +50,10 @@ export function EditorPane() {
               <span className="line-nr">{n === CURSOR_LINE ? n : Math.abs(n - CURSOR_LINE)}</span>
               <span className="line-text">
                 {tokens.map((t, j) => (
-                  <span key={j} className={`tok-${t.kind}`} style={{ color: `var(--c-${SYNTAX[t.kind]})` }}>
+                  <span
+                    key={j}
+                    style={{ color: `var(--c-${syntax[t.kind]})`, fontStyle: italic[t.kind] ? 'italic' : undefined }}
+                  >
                     {j === cursorAt ? <Cursor text={t.text} /> : t.text}
                   </span>
                 ))}
