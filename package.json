@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "test": "bun test",
     "lint": "oxlint",
-    "typecheck": "tsc -b"
+    "typecheck": "tsc -b",
+    "cli": "bun cli/index.ts"
   },
   "dependencies": {
     "fflate": "^0.8.3",
@@ -26,5 +27,8 @@
     "typescript": "~6.0.2",
     "vite": "^8.3.0"
   },
-  "description": "Design one color palette, preview it live, export matching themes for your terminal, editor and CLI tools"
+  "description": "Design one color palette, preview it live, export matching themes for your terminal, editor and CLI tools",
+  "bin": {
+    "themeforge": "./cli/index.ts"
+  }
 }
