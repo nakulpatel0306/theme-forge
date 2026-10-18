@@ -3,6 +3,8 @@
 Pick twelve colors once. Get matching themes for your terminal, editor, and
 command-line tools.
 
+**[Try it in your browser](https://nakulpatel0306.github.io/theme-forge/)**
+
 ![theme-forge editing Kanagawa Dragon, with a live Neovim and shell preview](docs/screenshot.png)
 
 Making every tool match by hand means editing a dozen config files, each in a
