@@ -32,9 +32,13 @@ bun dev
 ```
 
 - Start from a preset or open a `palette.json`.
+- **Generate** a palette from one color, from a wallpaper or screenshot you
+  drop in, or press **Space** to shuffle. Lock any color you like first and
+  generators leave it alone.
 - Click a swatch or type a hex value; the whole app, preview included, repaints
   as you go. The number next to each color is its contrast against the
-  background, red when it drops below 3:1.
+  background. Below 3:1 (4.5:1 for text) it turns into a **Fix** button that
+  lightens or darkens the color just enough, keeping its hue.
 - Rename the theme by editing the big title.
 - **Use it** shows the file for each tool, where it goes, and the line that
   turns it on. Download one, or all of them as a zip.

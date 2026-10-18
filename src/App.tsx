@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import type { Slot } from './core/palette'
 import { ExportPanel } from './ui/ExportPanel'
+import { GeneratePanel } from './ui/GeneratePanel'
 import { LiveBadge } from './ui/LiveBadge'
 import { OpenPalette } from './ui/OpenPalette'
 import { PresetPicker } from './ui/PresetPicker'
@@ -15,8 +17,16 @@ export default function App() {
   usePaletteVars(palette)
   const live = useLiveSync(palette)
 
+  const [locked, setLocked] = useState<ReadonlySet<Slot>>(new Set())
+
   const setColor = (slot: Slot, hex: string) =>
     setPalette((p) => ({ ...p, colors: { ...p.colors, [slot]: hex } }))
+  const toggleLock = (slot: Slot) =>
+    setLocked((current) => {
+      const next = new Set(current)
+      if (!next.delete(slot)) next.add(slot)
+      return next
+    })
 
   return (
     <div className="app">
@@ -39,8 +49,12 @@ export default function App() {
           <OpenPalette current={palette} onOpen={setPalette} />
         </section>
         <section>
+          <h2>Generate</h2>
+          <GeneratePanel palette={palette} locked={locked} onGenerate={setPalette} />
+        </section>
+        <section>
           <h2>Colors</h2>
-          <SwatchEditor colors={palette.colors} onChange={setColor} />
+          <SwatchEditor colors={palette.colors} locked={locked} onChange={setColor} onToggleLock={toggleLock} />
         </section>
       </aside>
 

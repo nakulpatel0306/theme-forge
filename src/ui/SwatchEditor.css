@@ -8,7 +8,7 @@
 
 .swatch {
   display: grid;
-  grid-template-columns: 2.4rem 1fr 5.6rem 2.2rem;
+  grid-template-columns: 2.4rem 1fr 5.6rem 2.2rem 1.6rem;
   align-items: center;
   gap: 0.7rem;
   padding: 0.35rem 0.4rem;
@@ -82,6 +82,64 @@
   text-align: right;
 }
 
-.swatch-contrast[data-low] {
+.swatch-fix {
+  padding: 0.15rem 0;
+  border: 1px solid var(--c-red);
+  border-radius: 0.3rem;
+  background: none;
   color: var(--c-red);
+  font: 600 0.72rem var(--sans);
+  text-align: center;
+  cursor: pointer;
+}
+
+.swatch-fix:hover {
+  background: var(--c-red);
+  color: var(--c-bg);
+}
+
+.swatch-lock {
+  display: grid;
+  place-items: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  padding: 0;
+  border: 0;
+  border-radius: 0.3rem;
+  background: none;
+  color: var(--c-muted);
+  cursor: pointer;
+  opacity: 0;
+}
+
+.swatch:hover .swatch-lock,
+.swatch-lock:focus-visible,
+.swatch-lock[aria-pressed='true'] {
+  opacity: 1;
+}
+
+.swatch-lock[aria-pressed='true'] {
+  color: var(--c-fg);
+}
+
+.swatch-lock svg {
+  width: 0.95rem;
+  height: 0.95rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+.swatch[data-locked] .swatch-chip {
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--c-fg) 18%, transparent),
+    0 0 0 2px var(--c-bg),
+    0 0 0 3px var(--c-muted);
+}
+
+@media (hover: none) {
+  .swatch-lock {
+    opacity: 1;
+  }
 }
