@@ -1,0 +1,83 @@
+.app {
+  display: grid;
+  grid-template-columns: minmax(20rem, 24rem) 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    'top top'
+    'side stage';
+  height: 100dvh;
+}
+
+.topbar {
+  grid-area: top;
+  display: flex;
+  align-items: baseline;
+  gap: 1.5rem;
+  padding: 1.1rem 1.5rem 0.9rem;
+  border-bottom: 1px solid var(--c-surface);
+}
+
+.wordmark {
+  color: var(--c-muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* The theme name is the page title, and it's editable in place */
+.theme-name {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--c-fg);
+  font: 600 clamp(1.6rem, 3vw, 2.4rem) / 1.1 var(--sans);
+  font-variation-settings: 'opsz' 96;
+  letter-spacing: -0.02em;
+}
+
+.theme-name:focus {
+  outline: none;
+  text-decoration: underline 2px var(--c-overlay);
+  text-underline-offset: 0.2em;
+}
+
+.sidebar {
+  grid-area: side;
+  display: grid;
+  align-content: start;
+  gap: 1.75rem;
+  padding: 1.25rem 1.1rem 2rem 1.5rem;
+  overflow-y: auto;
+  border-right: 1px solid var(--c-surface);
+}
+
+.sidebar h2 {
+  margin: 0 0 0.7rem;
+  color: var(--c-muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.stage {
+  grid-area: stage;
+  min-width: 0;
+  padding: 1.5rem;
+  overflow: auto;
+}
+
+@media (max-width: 52rem) {
+  .app {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'top'
+      'stage'
+      'side';
+    height: auto;
+  }
+
+  .sidebar {
+    border-right: 0;
+    border-top: 1px solid var(--c-surface);
+  }
+}

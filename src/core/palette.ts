@@ -28,9 +28,9 @@ export type Palette = {
 
 export const SLOT_INFO: Record<Slot, { label: string; hint: string }> = {
   bg: { label: 'Background', hint: 'Behind everything' },
-  surface: { label: 'Surface', hint: 'Status bars, gutters, panels' },
-  overlay: { label: 'Overlay', hint: 'Selections and borders' },
-  muted: { label: 'Muted', hint: 'Comments and line numbers' },
+  surface: { label: 'Surface', hint: 'Panels, status bars' },
+  overlay: { label: 'Overlay', hint: 'Selections, borders' },
+  muted: { label: 'Muted', hint: 'Comments, gutters' },
   fg: { label: 'Text', hint: 'Default foreground' },
   red: { label: 'Red', hint: 'Errors, deletions' },
   orange: { label: 'Orange', hint: 'Numbers, constants' },

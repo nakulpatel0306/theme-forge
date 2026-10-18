@@ -1,0 +1,87 @@
+.swatches {
+  display: grid;
+  gap: 0.15rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.swatch {
+  display: grid;
+  grid-template-columns: 2.4rem 1fr 5.6rem 2.2rem;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.35rem 0.4rem;
+  border-radius: 0.5rem;
+}
+
+.swatch:hover {
+  background: var(--c-surface);
+}
+
+.swatch-chip {
+  position: relative;
+  height: 2.4rem;
+  border-radius: 0.45rem;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c-fg) 18%, transparent);
+  cursor: pointer;
+}
+
+.swatch-chip:focus-within {
+  outline: 2px solid var(--c-fg);
+  outline-offset: 2px;
+}
+
+/* The native picker stays clickable but invisible; the chip is the visual */
+.swatch-chip input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.swatch-text {
+  display: grid;
+  min-width: 0;
+  line-height: 1.25;
+}
+
+.swatch-label {
+  font-weight: 600;
+}
+
+.swatch-hint {
+  overflow: hidden;
+  color: var(--c-muted);
+  font-size: 0.8rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.swatch-hex {
+  width: 100%;
+  padding: 0.3rem 0.4rem;
+  border: 1px solid transparent;
+  border-radius: 0.35rem;
+  background: transparent;
+  color: var(--c-fg);
+  font: 0.85rem/1 var(--mono);
+}
+
+.swatch-hex:hover,
+.swatch-hex:focus {
+  border-color: var(--c-overlay);
+  outline: none;
+}
+
+.swatch-contrast {
+  color: var(--c-muted);
+  font: 0.75rem var(--mono);
+  text-align: right;
+}
+
+.swatch-contrast[data-low] {
+  color: var(--c-red);
+}
