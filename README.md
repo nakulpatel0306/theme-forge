@@ -13,11 +13,11 @@ looking tmux + Neovim + shell session, and an export for each tool.
 
 ## Supported tools
 
-| Kind      | Tools                                     |
-| --------- | ----------------------------------------- |
-| Terminals | Ghostty, Kitty, Alacritty, WezTerm        |
-| Editors   | Neovim, VS Code, Cursor                   |
-| CLI tools | bat, delta, tmux, Starship, lazygit, fzf  |
+| Kind      | Tools                                                |
+| --------- | ---------------------------------------------------- |
+| Terminals | Ghostty, Kitty, Alacritty, WezTerm, iTerm2, Warp     |
+| Editors   | Neovim, VS Code, Cursor, Zed, Helix                  |
+| CLI tools | bat, delta, tmux, Starship, lazygit, fzf, btop       |
 
 Every export is a standalone theme file. theme-forge never edits your main
 config, so switching a theme on is always a single line you add yourself.
