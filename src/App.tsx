@@ -1,14 +1,15 @@
-import { useState } from 'react'
-import type { Palette, Slot } from './core/palette'
-import { PRESETS } from './core/presets'
+import type { Slot } from './core/palette'
+import { ExportPanel } from './ui/ExportPanel'
+import { OpenPalette } from './ui/OpenPalette'
 import { PresetPicker } from './ui/PresetPicker'
 import { Preview } from './ui/preview/Preview'
 import { SwatchEditor } from './ui/SwatchEditor'
+import { usePalette } from './ui/usePalette'
 import { usePaletteVars } from './ui/usePaletteVars'
 import './App.css'
 
 export default function App() {
-  const [palette, setPalette] = useState<Palette>(PRESETS[0])
+  const [palette, setPalette] = usePalette()
   usePaletteVars(palette)
 
   const setColor = (slot: Slot, hex: string) =>
@@ -31,6 +32,7 @@ export default function App() {
         <section>
           <h2>Start from</h2>
           <PresetPicker current={palette.name} onPick={setPalette} />
+          <OpenPalette current={palette} onOpen={setPalette} />
         </section>
         <section>
           <h2>Colors</h2>
@@ -40,6 +42,7 @@ export default function App() {
 
       <main className="stage">
         <Preview name={palette.name} />
+        <ExportPanel palette={palette} />
       </main>
     </div>
   )
