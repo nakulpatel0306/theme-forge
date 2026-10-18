@@ -1,0 +1,38 @@
+.presets {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr));
+  gap: 0.5rem;
+}
+
+.preset {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.6rem 0.7rem 0.55rem;
+  border: 1px solid var(--c-overlay);
+  border-radius: 0.6rem;
+  font: inherit;
+  font-size: 0.82rem;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 120ms ease;
+}
+
+.preset:hover {
+  transform: translateY(-1px);
+}
+
+.preset[aria-pressed='true'] {
+  outline: 2px solid var(--c-fg);
+  outline-offset: 2px;
+}
+
+.preset-strip {
+  display: flex;
+  height: 0.5rem;
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.preset-strip span {
+  flex: 1;
+}

@@ -1,3 +1,8 @@
+:root {
+  --sans: 'Bricolage Grotesque', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
 *,
 *::before,
 *::after {
@@ -6,4 +11,24 @@
 
 body {
   margin: 0;
+  background: var(--c-bg);
+  color: var(--c-fg);
+  font: 15px/1.5 var(--sans);
+  -webkit-font-smoothing: antialiased;
+  transition:
+    background 160ms ease,
+    color 160ms ease;
+}
+
+:focus-visible {
+  outline: 2px solid var(--c-fg);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+  }
 }
