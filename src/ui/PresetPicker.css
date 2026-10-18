@@ -36,3 +36,10 @@
 .preset-strip span {
   flex: 1;
 }
+
+.presets-heading {
+  margin: 1rem 0 0.5rem;
+  color: var(--c-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+}

@@ -5,6 +5,7 @@ import { SLOT_INFO, SLOTS, slugify, type Palette } from '../src/core/palette'
 import { PRESETS } from '../src/core/presets'
 import { paletteJson, renderAll, setupNotes } from '../src/targets/bundle'
 import { TARGETS, type Target } from '../src/targets'
+import { communityThemes } from './resolve'
 import { findEditors, installExtension } from './editors'
 
 const swatch = (hex: string) => {
@@ -15,10 +16,12 @@ const dim = (s: string) => `\x1b[2m${s}\x1b[0m`
 const bold = (s: string) => `\x1b[1m${s}\x1b[0m`
 
 export function list() {
-  console.log(bold('Presets'))
-  for (const p of PRESETS) {
+  const row = (p: Palette) =>
     console.log(`  ${SLOTS.slice(5).map((s) => swatch(p.colors[s]).replace('    ', '  ')).join('')}  ${slugify(p.name)}`)
-  }
+  console.log(bold('Presets'))
+  PRESETS.forEach(row)
+  console.log(`\n${bold('Community')}`)
+  communityThemes().forEach(row)
   console.log(`\n${bold('Targets')}`)
   for (const t of TARGETS) console.log(`  ${t.id.padEnd(10)} ${dim(`~/${t.path('<theme>')}`)}`)
 }

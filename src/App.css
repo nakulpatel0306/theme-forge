@@ -86,14 +86,39 @@
   margin-top: 0.75rem;
 }
 
-.open-palette label {
-  display: inline-block;
+.open-actions {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.paste {
+  display: grid;
+  gap: 0.4rem;
+  margin-top: 0.6rem;
+}
+
+.paste textarea {
+  padding: 0.6rem;
+  border: 1px solid var(--c-overlay);
+  border-radius: 0.45rem;
+  background: var(--c-surface);
+  color: var(--c-fg);
+  font: 12px/1.5 var(--mono);
+  resize: vertical;
+}
+
+.paste button {
+  justify-self: start;
 }
 
 .open-palette p {
   margin: 0.4rem 0 0;
-  color: var(--c-red);
+  color: var(--c-muted);
   font-size: 0.85rem;
+}
+
+.open-palette p[data-error] {
+  color: var(--c-red);
 }
 
 .live-badge {

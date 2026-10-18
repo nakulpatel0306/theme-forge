@@ -35,8 +35,8 @@ test('apply --yes writes, then backs up on change', async () => {
   expect(await Bun.file(join(dir, 'nord')).text()).toContain('#ff0000')
 })
 
-test('unknown preset fails with the list of options', () => {
-  const { code, err } = run('preview', 'dracula')
+test('unknown theme fails with the list of options', () => {
+  const { code, err } = run('preview', 'no-such-theme')
   expect(code).toBe(1)
   expect(err).toContain('kanagawa-dragon')
 })
