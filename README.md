@@ -5,7 +5,7 @@ command-line tools.
 
 **[Try it in your browser](https://nakulpatel0306.github.io/theme-forge/)**
 
-![theme-forge editing Kanagawa Dragon, with a live Neovim and shell preview](docs/screenshot.png)
+![theme-forge switching between themes, shuffling palettes, and previewing them in a terminal, VS Code and lazygit](docs/demo.gif)
 
 Making every tool match by hand means editing a dozen config files, each in a
 different format. theme-forge gives you one palette, a live preview of a real
@@ -30,6 +30,8 @@ whichever of the two you have.
 bun install
 bun dev
 ```
+
+![The editor: presets and generators on the left, a live tmux and Neovim preview on the right](docs/screenshot.png)
 
 - Start from a preset or a community theme, or bring your current one:
   **Open a theme file** or **Paste a theme** reads Ghostty, Kitty, Alacritty,
