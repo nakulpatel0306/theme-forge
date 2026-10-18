@@ -1,16 +1,21 @@
 import { alacritty } from './alacritty'
 import { bat } from './bat'
+import { btop } from './btop'
 import { delta } from './delta'
 import { fzf } from './fzf'
 import { ghostty } from './ghostty'
+import { helix } from './helix'
+import { iterm2 } from './iterm2'
 import { kitty } from './kitty'
 import { lazygit } from './lazygit'
 import { neovim } from './neovim'
 import { starship } from './starship'
 import { tmux } from './tmux'
-import { vscode } from './vscode'
 import type { Target } from './types'
+import { vscode } from './vscode'
+import { warp } from './warp'
 import { wezterm } from './wezterm'
+import { zed } from './zed'
 
 export type { Target } from './types'
 
@@ -20,12 +25,17 @@ export const TARGETS: Target[] = [
   kitty,
   alacritty,
   wezterm,
+  iterm2,
+  warp,
   neovim,
   vscode,
+  zed,
+  helix,
   bat,
   delta,
   tmux,
   starship,
   lazygit,
   fzf,
+  btop,
 ]

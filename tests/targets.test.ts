@@ -8,7 +8,8 @@ import { colorTheme, vscode } from '../src/targets/vscode'
 const kanagawa = PRESETS[0]
 
 describe.each(TARGETS.map((t) => [t.id, t] as const))('%s', (_, target) => {
-  test('renders every preset using the palette', () => {
+  // iTerm2 stores colors as 0-1 components; it gets its own test below
+  test.skipIf(target.id === 'iterm2')('renders every preset using the palette', () => {
     for (const preset of PRESETS) {
       const out = target.render(preset, slugify(preset.name))
       const { normal, bright } = ansi(preset)
@@ -21,10 +22,11 @@ describe.each(TARGETS.map((t) => [t.id, t] as const))('%s', (_, target) => {
     }
   })
 
-  test('install path stays inside ~/.config and never targets a main config', () => {
+  test('install path is a dedicated theme file, never a main config', () => {
     const path = target.path('demo')
-    expect(path.startsWith('.config/')).toBe(true)
+    expect(path).toMatch(/^\.(config|warp)\//)
     expect(path).toContain('demo')
+    expect(path).not.toMatch(/(^|\/)(config|config\.toml|config\.yml|kitty\.conf|tmux\.conf|starship\.toml|btop\.conf|settings\.json)$/)
   })
 
   test('output is stable', () => {
@@ -70,4 +72,20 @@ test('VS Code theme uses valid colors and packages as a vsix', () => {
   const pkg = JSON.parse(strFromU8(files['extension/package.json']))
   expect(pkg.contributes.themes[0].path).toBe('./themes/kanagawa-dragon-color-theme.json')
   expect(strFromU8(files['extension.vsixmanifest'])).toContain(`Version="${pkg.version}"`)
+})
+
+test('iTerm2 colors round-trip from their 0-1 components', () => {
+  const iterm2 = TARGETS.find((t) => t.id === 'iterm2')!
+  for (const preset of PRESETS) {
+    const out = iterm2.render(preset, 'x')
+    const read = (name: string) => {
+      const block = out.split(`<key>${name}</key>`)[1]
+      const c = (channel: string) =>
+        Math.round(Number(block.match(new RegExp(`${channel} Component</key>\\s*<real>([\\d.]+)`))![1]) * 255)
+      return '#' + [c('Red'), c('Green'), c('Blue')].map((v) => v.toString(16).padStart(2, '0')).join('')
+    }
+    expect(read('Background Color')).toBe(preset.colors.bg)
+    expect(read('Ansi 1 Color')).toBe(ansi(preset).normal[1])
+    expect(read('Ansi 15 Color')).toBe(ansi(preset).bright[7])
+  }
 })
