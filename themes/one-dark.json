@@ -1,0 +1,18 @@
+{
+  "name": "One Dark",
+  "author": "Atom",
+  "colors": {
+    "bg": "#282c34",
+    "surface": "#31353f",
+    "overlay": "#3e4451",
+    "muted": "#5c6370",
+    "fg": "#abb2bf",
+    "red": "#e06c75",
+    "orange": "#d19a66",
+    "yellow": "#e5c07b",
+    "green": "#98c379",
+    "cyan": "#56b6c2",
+    "blue": "#61afef",
+    "magenta": "#c678dd"
+  }
+}

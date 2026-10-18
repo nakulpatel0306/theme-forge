@@ -1,5 +1,6 @@
 import { SLOTS, type Palette } from '../core/palette'
 import { PRESETS } from '../core/presets'
+import { COMMUNITY } from './communityThemes'
 import './PresetPicker.css'
 
 type Props = {
@@ -9,8 +10,22 @@ type Props = {
 
 export function PresetPicker({ current, onPick }: Props) {
   return (
+    <>
+      <PresetGrid presets={PRESETS} current={current} onPick={onPick} />
+      {COMMUNITY.length > 0 && (
+        <>
+          <h3 className="presets-heading">From the community</h3>
+          <PresetGrid presets={COMMUNITY} current={current} onPick={onPick} />
+        </>
+      )}
+    </>
+  )
+}
+
+function PresetGrid({ presets, current, onPick }: Props & { presets: Palette[] }) {
+  return (
     <div className="presets" role="list">
-      {PRESETS.map((preset) => (
+      {presets.map((preset) => (
         <button
           key={preset.name}
           role="listitem"

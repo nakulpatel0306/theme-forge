@@ -31,7 +31,9 @@ bun install
 bun dev
 ```
 
-- Start from a preset or open a `palette.json`.
+- Start from a preset or a community theme, or bring your current one:
+  **Open a theme file** or **Paste a theme** reads Ghostty, Kitty, Alacritty,
+  WezTerm, iTerm2 and Xresources themes, and `palette.json`.
 - **Generate** a palette from one color, from a wallpaper or screenshot you
   drop in, or press **Space** to shuffle. Lock any color you like first and
   generators leave it alone.
@@ -75,7 +77,11 @@ bun cli/index.ts preview kanagawa-dragon           # print the palette
 bun cli/index.ts export my-theme.json --out ./out  # write every file to a folder
 bun cli/index.ts apply my-theme.json               # show what would be installed
 bun cli/index.ts apply my-theme.json --yes         # install into ~/.config
+bun cli/index.ts export ~/.config/kitty/theme.conf --only ghostty  # convert Kitty -> Ghostty
 ```
+
+Anywhere a theme goes, you can pass a preset name, a community theme name, a
+`palette.json`, or any terminal theme file theme-forge can import.
 
 `bun run cli <command>` works too, e.g. `bun run cli list`.
 
@@ -105,6 +111,13 @@ backgrounds, and the cursor line, are derived from these twelve in
 [`src/core/palette.ts`](src/core/palette.ts). Which syntax token gets which
 color lives in one map, [`src/core/syntax.ts`](src/core/syntax.ts), shared by
 the preview and the editor exports, so the preview shows what you'll get.
+
+## Share a theme
+
+Drop a `palette.json` (from **Download palette.json**) into [`themes/`](themes),
+named after the theme (`themes/my-theme.json`), add an `"author"` field, and
+open a pull request. It shows up under **From the community** in the app and
+by name in the CLI. CI checks that it loads and that its text is readable.
 
 ## Add a tool
 

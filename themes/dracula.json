@@ -1,0 +1,18 @@
+{
+  "name": "Dracula",
+  "author": "Zeno Rocha (draculatheme.com)",
+  "colors": {
+    "bg": "#282a36",
+    "surface": "#343746",
+    "overlay": "#44475a",
+    "muted": "#6272a4",
+    "fg": "#f8f8f2",
+    "red": "#ff5555",
+    "orange": "#ffb86c",
+    "yellow": "#f1fa8c",
+    "green": "#50fa7b",
+    "cyan": "#8be9fd",
+    "blue": "#bd93f9",
+    "magenta": "#ff79c6"
+  }
+}

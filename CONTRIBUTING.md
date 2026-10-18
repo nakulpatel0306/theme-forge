@@ -44,13 +44,25 @@ doesn't cover yet.
 - **Use the palette, don't invent colors.** Use the twelve slots, `ansi()`, and
   `derived()`. If you need a new derived color that other targets would want
   too, add it to `derived()` in `src/core/palette.ts`.
-- **Editors follow `SYNTAX`.** Map token kinds through `src/core/syntax.ts` so
-  the web preview stays accurate.
+- **Editors follow `styleOf(palette)`.** It returns the token colors and
+  italics for the palette (see `src/core/syntax.ts`), including any the user
+  changed in the Syntax editor, so exports match the preview.
 - **Handle light themes.** Check your output with Catppuccin Latte. Use
   `isLight()` from `src/core/color.ts` where the tool wants a dark/light flag.
 
+## Sharing a theme
+
+1. Make it in the app and click **Download palette.json**.
+2. Add an `"author"` field and save it as `themes/<theme-name>.json`, where the
+   file name is the theme name in lowercase with dashes (`Quiet Harbor` becomes
+   `quiet-harbor.json`).
+3. Run `bun test tests/community.test.ts`. It checks the file loads, the name
+   matches, text has at least 4.5:1 contrast, and no other theme has the name.
+
+If you're porting someone else's theme, credit them as the author.
+
 ## Other changes
 
-New presets go in [`src/core/presets.ts`](src/core/presets.ts); use the
-theme's official colors and pass the contrast test. For anything larger, open
+The built-in presets in [`src/core/presets.ts`](src/core/presets.ts) stay
+small on purpose; new themes belong in `themes/`. For anything larger, open
 an issue first so we can agree on the approach.
