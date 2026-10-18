@@ -1,0 +1,106 @@
+.help {
+  width: min(44rem, calc(100vw - 2rem));
+  max-height: min(48rem, calc(100dvh - 2rem));
+  padding: 0;
+  border: 1px solid var(--c-overlay);
+  border-radius: 0.8rem;
+  background: var(--c-bg);
+  color: var(--c-fg);
+  box-shadow: 0 2rem 5rem -1.5rem color-mix(in srgb, black 60%, transparent);
+}
+
+.help::backdrop {
+  background: color-mix(in srgb, var(--c-bg) 70%, transparent);
+  backdrop-filter: blur(2px);
+}
+
+.help-body {
+  padding: 1.5rem 1.75rem 1.75rem;
+  line-height: 1.6;
+}
+
+.help header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.help h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.help-lede {
+  margin: 0.75rem 0 1.25rem;
+  color: var(--c-muted);
+  font-size: 1.02rem;
+}
+
+.help-steps {
+  display: grid;
+  gap: 1.1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.help-steps li {
+  position: relative;
+  padding-left: 2.4rem;
+  counter-increment: step;
+}
+
+/* The steps really are a sequence, so they get numbers */
+.help-steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0.1rem;
+  display: grid;
+  place-items: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  background: var(--c-surface);
+  color: var(--c-blue);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.help h3 {
+  margin: 0 0 0.25rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.help p {
+  margin: 0 0 0.5rem;
+}
+
+.help b {
+  font-weight: 600;
+  color: var(--c-blue);
+}
+
+.help a {
+  color: var(--c-blue);
+}
+
+.help-cli {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--c-surface);
+}
+
+.help pre {
+  margin: 0.5rem 0 0.75rem;
+  padding: 0.9rem 1rem;
+  overflow-x: auto;
+  border-radius: 0.5rem;
+  background: var(--c-surface);
+  font: 12px/1.6 var(--mono);
+}

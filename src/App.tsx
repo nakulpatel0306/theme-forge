@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { Slot } from './core/palette'
 import { ExportPanel } from './ui/ExportPanel'
 import { GeneratePanel } from './ui/GeneratePanel'
+import { HelpDialog } from './ui/HelpDialog'
 import { LiveBadge } from './ui/LiveBadge'
 import { OpenPalette } from './ui/OpenPalette'
 import { PresetPicker } from './ui/PresetPicker'
@@ -42,6 +43,7 @@ export default function App() {
         />
         <LiveBadge live={live} />
         <div className="history">
+          <HelpDialog />
           <button className="button small" onClick={undo} disabled={!canUndo} title="Undo (⌘Z)">
             Undo
           </button>
