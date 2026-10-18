@@ -35,6 +35,9 @@ bun dev
 - **Generate** a palette from one color, from a wallpaper or screenshot you
   drop in, or press **Space** to shuffle. Lock any color you like first and
   generators leave it alone.
+- The preview switches between a **Terminal** (tmux, Neovim, shell), a
+  **VS Code** window and **lazygit**, and can simulate red-, green- and
+  blue-blind vision so you can check your diff colors still read.
 - Click a swatch or type a hex value; the whole app, preview included, repaints
   as you go. The number next to each color is its contrast against the
   background. Below 3:1 (4.5:1 for text) it turns into a **Fix** button that
