@@ -40,6 +40,23 @@ bun dev
   turns it on. Download one, or all of them as a zip.
 - The URL always holds the current palette, so copying it shares your theme.
 
+## Live sync
+
+```sh
+bun cli/index.ts live
+```
+
+This opens the editor in your browser and keeps your real tools in step with
+it. Drag a color and, within a moment:
+
+- every running **Neovim** switches to the live theme (no setup)
+- your **tmux** status bar and borders recolor (no setup)
+- **Ghostty** reloads, once you've added `theme = theme-forge-live` to its config
+
+Press Ctrl+C and Neovim and tmux go back to exactly what they were. The live
+server only listens on `127.0.0.1` and refuses connections from any page other
+than the editor itself.
+
 ## Use the CLI
 
 ```sh

@@ -2,6 +2,7 @@
 import { homedir } from 'node:os'
 import { parseArgs } from 'node:util'
 import { apply, exportTo, list, preview } from './commands'
+import { live } from './live'
 import { resolvePalette, resolveTargets } from './resolve'
 
 const HELP = `theme-forge: one palette, every tool
@@ -11,6 +12,7 @@ Usage
   themeforge preview <theme>               Print a palette's colors
   themeforge export <theme> [--out dir]    Write all theme files to a folder
   themeforge apply <theme> [--yes]         Install theme files into ~/.config
+  themeforge live                          Edit in the browser, recolor Neovim/tmux/Ghostty live
 
 <theme> is a preset name (see list) or a palette.json from the web app.
 
@@ -19,6 +21,8 @@ Options
   --out <dir>    Folder for export (default: ./<theme-name>)
   --home <dir>   Install root for apply (default: your home directory)
   --yes          Actually write files; apply is a dry run without it
+  --port <n>     Port for live (default: 4747)
+  --no-open      Don't open the browser for live
 `
 
 async function main() {
@@ -29,6 +33,8 @@ async function main() {
       out: { type: 'string' },
       home: { type: 'string' },
       yes: { type: 'boolean', default: false },
+      port: { type: 'string' },
+      'no-open': { type: 'boolean', default: false },
       help: { type: 'boolean', short: 'h', default: false },
     },
   })
@@ -36,6 +42,9 @@ async function main() {
 
   if (values.help || !command) return console.log(HELP)
   if (command === 'list') return list()
+  if (command === 'live') {
+    return live({ home: values.home ?? homedir(), port: values.port, open: !values['no-open'], isRealHome: !values.home })
+  }
 
   const palette = await resolvePalette(theme)
   const targets = resolveTargets(values.only)
