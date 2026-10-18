@@ -1,16 +1,27 @@
 import { slugify, type Palette } from '../core/palette'
 import { TARGETS, type Target } from './index'
 
-export type OutputFile = { target: Target; path: string; contents: string; setup: string }
+export type OutputFile = {
+  target: Target
+  path: string
+  // What goes on disk; differs from `contents` only for binary targets
+  data: string | Uint8Array
+  contents: string
+  setup: string
+}
 
 export function renderAll(palette: Palette, targets: Target[] = TARGETS): OutputFile[] {
   const slug = slugify(palette.name)
-  return targets.map((target) => ({
-    target,
-    path: target.path(slug),
-    contents: target.render(palette, slug),
-    setup: target.setup(slug),
-  }))
+  return targets.map((target) => {
+    const contents = target.render(palette, slug)
+    return {
+      target,
+      path: target.path(slug),
+      data: target.binary?.(palette, slug) ?? contents,
+      contents,
+      setup: target.setup(slug),
+    }
+  })
 }
 
 // Shipped alongside the generated files so the palette can be re-imported

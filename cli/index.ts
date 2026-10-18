@@ -46,7 +46,7 @@ async function main() {
     case 'export':
       return exportTo(palette, targets, values.out)
     case 'apply':
-      return apply(palette, targets, { home: values.home ?? homedir(), yes: values.yes })
+      return apply(palette, targets, { home: values.home ?? homedir(), yes: values.yes, installEditors: !values.home })
     default:
       throw new Error(`Unknown command "${command}". Run \`themeforge --help\`.`)
   }

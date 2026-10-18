@@ -1,7 +1,9 @@
 import { describe, expect, test } from 'bun:test'
+import { strFromU8, unzipSync } from 'fflate'
 import { ansi, slugify } from '../src/core/palette'
 import { PRESETS } from '../src/core/presets'
 import { TARGETS } from '../src/targets'
+import { colorTheme, vscode } from '../src/targets/vscode'
 
 const kanagawa = PRESETS[0]
 
@@ -47,4 +49,25 @@ test('key = value targets have no malformed lines', () => {
   for (const line of kitty.split('\n').filter((l) => l && !l.startsWith('#'))) {
     expect(line).toMatch(/^[a-z_0-9]+ #[0-9a-f]{6}$/)
   }
+})
+
+test('VS Code theme uses valid colors and packages as a vsix', () => {
+  for (const preset of PRESETS) {
+    const theme = colorTheme(preset)
+    for (const [key, value] of Object.entries(theme.colors)) {
+      expect(`${key}=${value}`).toMatch(/=#[0-9a-f]{6}([0-9a-f]{2})?$/)
+    }
+    expect(theme.type).toBe(preset.name === 'Catppuccin Latte' ? 'light' : 'dark')
+  }
+
+  const files = unzipSync(vscode.binary!(kanagawa, 'kanagawa-dragon'))
+  expect(Object.keys(files).sort()).toEqual([
+    '[Content_Types].xml',
+    'extension.vsixmanifest',
+    'extension/package.json',
+    'extension/themes/kanagawa-dragon-color-theme.json',
+  ])
+  const pkg = JSON.parse(strFromU8(files['extension/package.json']))
+  expect(pkg.contributes.themes[0].path).toBe('./themes/kanagawa-dragon-color-theme.json')
+  expect(strFromU8(files['extension.vsixmanifest'])).toContain(`Version="${pkg.version}"`)
 })

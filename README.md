@@ -16,11 +16,13 @@ looking tmux + Neovim + shell session, and an export for each tool.
 | Kind      | Tools                                     |
 | --------- | ----------------------------------------- |
 | Terminals | Ghostty, Kitty, Alacritty, WezTerm        |
-| Editors   | Neovim                                    |
+| Editors   | Neovim, VS Code, Cursor                   |
 | CLI tools | bat, delta, tmux, Starship, lazygit, fzf  |
 
 Every export is a standalone theme file. theme-forge never edits your main
 config, so switching a theme on is always a single line you add yourself.
+VS Code and Cursor get a real extension (`.vsix`); `apply` installs it into
+whichever of the two you have.
 
 ## Use the web app
 
