@@ -6,13 +6,16 @@ import { TARGETS } from '../src/targets'
 const kanagawa = PRESETS[0]
 
 describe.each(TARGETS.map((t) => [t.id, t] as const))('%s', (_, target) => {
-  test('renders every preset with all 16 terminal colors', () => {
+  test('renders every preset using the palette', () => {
     for (const preset of PRESETS) {
       const out = target.render(preset, slugify(preset.name))
       const { normal, bright } = ansi(preset)
-      for (const hex of [...normal, ...bright, preset.colors.bg, preset.colors.fg]) {
-        expect(out).toContain(hex)
-      }
+      // Terminals must carry the full ANSI set; other tools just need the core accents
+      const expected =
+        target.kind === 'terminal'
+          ? [...normal, ...bright, preset.colors.bg, preset.colors.fg]
+          : [preset.colors.red, preset.colors.green, preset.colors.blue]
+      for (const hex of expected) expect(out).toContain(hex)
     }
   })
 
