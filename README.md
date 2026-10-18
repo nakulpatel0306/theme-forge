@@ -3,7 +3,7 @@
 Pick twelve colors once. Get matching themes for your terminal, editor, and
 command-line tools.
 
-**[Try it in your browser](https://nakulpatel0306.github.io/theme-forge/)**
+**[Try it in your browser](https://nakulpatel0306.github.io/theme-forge/)** · **[Read the guide](docs/GUIDE.md)**
 
 ![theme-forge switching between themes, shuffling palettes, and previewing them in a terminal, VS Code and lazygit](docs/demo.gif)
 
