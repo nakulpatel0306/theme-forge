@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { Palette, Slot } from './core/palette'
 import { PRESETS } from './core/presets'
 import { PresetPicker } from './ui/PresetPicker'
+import { Preview } from './ui/preview/Preview'
 import { SwatchEditor } from './ui/SwatchEditor'
 import { usePaletteVars } from './ui/usePaletteVars'
 import './App.css'
@@ -37,7 +38,9 @@ export default function App() {
         </section>
       </aside>
 
-      <main className="stage" />
+      <main className="stage">
+        <Preview name={palette.name} />
+      </main>
     </div>
   )
 }
