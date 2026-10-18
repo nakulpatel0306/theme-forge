@@ -30,5 +30,6 @@
   "description": "Design one color palette, preview it live, export matching themes for your terminal, editor and CLI tools",
   "bin": {
     "themeforge": "./cli/index.ts"
-  }
+  },
+  "license": "MIT"
 }
