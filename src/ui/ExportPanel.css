@@ -1,0 +1,125 @@
+.export {
+  max-width: 64rem;
+  margin: 2.5rem auto 0;
+}
+
+.export-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.export-head h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.export-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.export-body {
+  display: grid;
+  grid-template-columns: 11rem 1fr;
+  gap: 1.25rem;
+}
+
+.target-group + .target-group {
+  margin-top: 1rem;
+}
+
+.target-group h3 {
+  margin: 0 0 0.3rem;
+  color: var(--c-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.target {
+  display: block;
+  width: 100%;
+  padding: 0.3rem 0.6rem;
+  border: 0;
+  border-radius: 0.4rem;
+  background: none;
+  color: var(--c-fg);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.target:hover {
+  background: var(--c-surface);
+}
+
+.target[aria-current] {
+  background: var(--c-overlay);
+  font-weight: 600;
+}
+
+.target-file {
+  min-width: 0;
+}
+
+.file-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.file-path {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font: 0.85rem var(--mono);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-setup {
+  margin: 0.5rem 0 0.75rem;
+  color: var(--c-muted);
+  font-size: 0.9rem;
+}
+
+.file-contents {
+  max-height: 24rem;
+  margin: 0;
+  padding: 1rem;
+  overflow: auto;
+  border-radius: 0.6rem;
+  background: var(--c-surface);
+  font: 12px/1.6 var(--mono);
+}
+
+@media (max-width: 40rem) {
+  .export-body {
+    grid-template-columns: 1fr;
+  }
+
+  .target-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  .target-group + .target-group {
+    margin-top: 0;
+  }
+
+  .target-group h3 {
+    display: none;
+  }
+
+  .target {
+    display: inline-block;
+    width: auto;
+  }
+}

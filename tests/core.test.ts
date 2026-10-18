@@ -2,6 +2,7 @@ import { describe, expect, test } from 'bun:test'
 import { contrast, hexToRgb, isHex, mix, normalizeHex, rgbToHex } from '../src/core/color'
 import { ansi, parsePalette, SLOTS, slugify } from '../src/core/palette'
 import { PRESETS } from '../src/core/presets'
+import { decodeShare, encodeShare } from '../src/core/share'
 
 describe('color', () => {
   test('normalizes short and uppercase hex', () => {
@@ -58,5 +59,20 @@ describe('palette', () => {
     expect(dark.normal).toHaveLength(8)
     expect(hexToRgb(dark.bright[1]).r).toBeGreaterThan(hexToRgb(dark.normal[1]).r)
     expect(hexToRgb(light.bright[1]).r).toBeLessThan(hexToRgb(light.normal[1]).r)
+  })
+})
+
+describe('share links', () => {
+  test('round trip', () => {
+    for (const preset of PRESETS) {
+      expect(decodeShare(encodeShare(preset))).toEqual(preset)
+    }
+  })
+
+  test('reject tampered links', () => {
+    expect(decodeShare('')).toBeNull()
+    expect(decodeShare('#c=181616-282727')).toBeNull()
+    const bad = encodeShare(PRESETS[0]).replace('181616', 'zzzzzz')
+    expect(decodeShare(bad)).toBeNull()
   })
 })
