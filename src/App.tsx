@@ -1,16 +1,19 @@
 import type { Slot } from './core/palette'
 import { ExportPanel } from './ui/ExportPanel'
+import { LiveBadge } from './ui/LiveBadge'
 import { OpenPalette } from './ui/OpenPalette'
 import { PresetPicker } from './ui/PresetPicker'
 import { Preview } from './ui/preview/Preview'
 import { SwatchEditor } from './ui/SwatchEditor'
 import { usePalette } from './ui/usePalette'
 import { usePaletteVars } from './ui/usePaletteVars'
+import { useLiveSync } from './ui/useLiveSync'
 import './App.css'
 
 export default function App() {
   const [palette, setPalette] = usePalette()
   usePaletteVars(palette)
+  const live = useLiveSync(palette)
 
   const setColor = (slot: Slot, hex: string) =>
     setPalette((p) => ({ ...p, colors: { ...p.colors, [slot]: hex } }))
@@ -26,6 +29,7 @@ export default function App() {
           aria-label="Theme name"
           spellCheck={false}
         />
+        <LiveBadge live={live} />
       </header>
 
       <aside className="sidebar">

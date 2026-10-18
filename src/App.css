@@ -95,3 +95,27 @@
   color: var(--c-red);
   font-size: 0.85rem;
 }
+
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--c-overlay);
+  border-radius: 99px;
+  color: var(--c-fg);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.live-badge i {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--c-green);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--c-green) 30%, transparent);
+}
+
+.live-badge.is-lost {
+  color: var(--c-muted);
+}
