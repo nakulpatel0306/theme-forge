@@ -39,7 +39,10 @@ bun dev
   as you go. The number next to each color is its contrast against the
   background. Below 3:1 (4.5:1 for text) it turns into a **Fix** button that
   lightens or darkens the color just enough, keeping its hue.
-- Rename the theme by editing the big title.
+- **Syntax** picks which color keywords, strings, functions and the rest get,
+  and whether comments and keywords are italic. Every editor export follows it.
+- Rename the theme by editing the big title. **Undo** and **Redo** (⌘Z, ⇧⌘Z)
+  cover every change.
 - **Use it** shows the file for each tool, where it goes, and the line that
   turns it on. Download one, or all of them as a zip.
 - The URL always holds the current palette, so copying it shares your theme.

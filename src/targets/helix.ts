@@ -1,5 +1,5 @@
 import { derived, SLOTS } from '../core/palette'
-import { SYNTAX } from '../core/syntax'
+import { styleOf } from '../core/syntax'
 import { header, type Target } from './types'
 
 type Style = { fg?: string; bg?: string; modifiers?: string[]; underline?: { color: string; style: string } }
@@ -21,7 +21,8 @@ export const helix: Target = {
   setup: (slug) => `Add \`theme = "${slug}"\` to ~/.config/helix/config.toml`,
   render(palette) {
     const d = derived(palette)
-    const s = SYNTAX
+    const { syntax: s, italicComments, italicKeywords } = styleOf(palette)
+    const italic = (on: boolean): Style => (on ? { modifiers: ['italic'] } : {})
     // Values are palette names, defined in the [palette] table at the bottom
     const scopes: Record<string, Style> = {
       'ui.background': { bg: 'bg' },
@@ -50,8 +51,8 @@ export const helix: Target = {
       'ui.virtual.inlay-hint': { fg: 'muted' },
       'ui.virtual.ruler': { bg: 'surface' },
 
-      comment: { fg: s.comment, modifiers: ['italic'] },
-      keyword: { fg: s.keyword, modifiers: ['italic'] },
+      comment: { fg: s.comment, ...italic(italicComments) },
+      keyword: { fg: s.keyword, ...italic(italicKeywords) },
       function: { fg: s.function },
       string: { fg: s.string },
       'constant.character.escape': { fg: s.operator },

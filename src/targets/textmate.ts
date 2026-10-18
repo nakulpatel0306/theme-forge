@@ -1,13 +1,13 @@
 import type { Palette, Slot } from '../core/palette'
-import { SYNTAX, type TokenKind } from '../core/syntax'
+import { styleOf, type TokenKind } from '../core/syntax'
 
 export type TokenRule = { name: string; scope: string[]; foreground: string; fontStyle?: string }
 
 // TextMate scopes for each token kind. bat, delta (through bat) and VS Code
 // all highlight with these, so they share one list.
 const SCOPES: [TokenKind, string[], string?][] = [
-  ['comment', ['comment', 'punctuation.definition.comment'], 'italic'],
-  ['keyword', ['keyword', 'storage', 'storage.type', 'keyword.control'], 'italic'],
+  ['comment', ['comment', 'punctuation.definition.comment']],
+  ['keyword', ['keyword', 'storage', 'storage.type', 'keyword.control']],
   ['function', ['entity.name.function', 'support.function', 'meta.function-call variable.function']],
   ['string', ['string', 'punctuation.definition.string']],
   ['number', ['constant.numeric', 'constant.language', 'constant.character', 'constant.other']],
@@ -27,9 +27,21 @@ const MARKUP: [Slot, string[], string?][] = [
   ['orange', ['entity.other.attribute-name']],
 ]
 
-export function tokenRules({ colors }: Palette): TokenRule[] {
+export function tokenRules(palette: Palette): TokenRule[] {
+  const { colors } = palette
+  const { syntax, italicComments, italicKeywords } = styleOf(palette)
+  // Always explicit so turning italics off also overrides inherited styles
+  const italic: Partial<Record<TokenKind, string>> = {
+    comment: italicComments ? 'italic' : '',
+    keyword: italicKeywords ? 'italic' : '',
+  }
   return [
-    ...SCOPES.map(([kind, scope, fontStyle]) => ({ name: kind, scope, foreground: colors[SYNTAX[kind]], fontStyle })),
+    ...SCOPES.map(([kind, scope, fontStyle]) => ({
+      name: kind,
+      scope,
+      foreground: colors[syntax[kind]],
+      fontStyle: italic[kind] ?? fontStyle,
+    })),
     ...MARKUP.map(([slot, scope, fontStyle]) => ({ name: scope[0], scope, foreground: colors[slot], fontStyle })),
   ]
 }

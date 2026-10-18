@@ -1,4 +1,5 @@
 import { darken, isHex, isLight, lighten, mix, normalizeHex } from './color'
+import { TOKEN_KINDS, type StyleOverrides, type TokenKind } from './syntax'
 
 // Twelve slots are enough to drive every target. Anything else a tool needs
 // (bright ANSI colors, selection, cursor) is derived from these so a palette
@@ -24,6 +25,7 @@ export type Colors = Record<Slot, string>
 export type Palette = {
   name: string
   colors: Colors
+  style?: StyleOverrides
 }
 
 export const SLOT_INFO: Record<Slot, { label: string; hint: string }> = {
@@ -54,7 +56,28 @@ export function parsePalette(input: unknown): Palette {
     }
     out[slot] = normalizeHex(value)
   }
-  return { name: typeof name === 'string' && name.trim() ? name.trim() : 'Untitled', colors: out }
+  const palette: Palette = { name: typeof name === 'string' && name.trim() ? name.trim() : 'Untitled', colors: out }
+  const style = parseStyle((input as { style?: unknown }).style)
+  if (style) palette.style = style
+  return palette
+}
+
+const isSlot = (value: unknown): value is Slot => typeof value === 'string' && (SLOTS as readonly string[]).includes(value)
+
+// Unknown keys are dropped rather than rejected, so older or newer files still load
+function parseStyle(input: unknown): StyleOverrides | undefined {
+  if (typeof input !== 'object' || input === null) return undefined
+  const { syntax, italicComments, italicKeywords } = input as Record<string, unknown>
+  const style: StyleOverrides = {}
+  if (typeof syntax === 'object' && syntax !== null) {
+    const entries = TOKEN_KINDS.filter((kind) => isSlot((syntax as Record<string, unknown>)[kind])).map(
+      (kind) => [kind, (syntax as Record<TokenKind, Slot>)[kind]] as const,
+    )
+    if (entries.length) style.syntax = Object.fromEntries(entries)
+  }
+  if (typeof italicComments === 'boolean') style.italicComments = italicComments
+  if (typeof italicKeywords === 'boolean') style.italicKeywords = italicKeywords
+  return Object.keys(style).length ? style : undefined
 }
 
 // Filesystem and identifier friendly version of the palette name

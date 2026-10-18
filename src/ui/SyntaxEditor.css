@@ -1,0 +1,56 @@
+.syntax {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.syntax-row {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.syntax-label {
+  font: 0.82rem var(--mono);
+}
+
+.syntax-choices {
+  display: flex;
+  gap: 0.3rem;
+}
+
+.syntax-choices button {
+  width: 1.15rem;
+  height: 1.15rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c-fg) 15%, transparent);
+  cursor: pointer;
+}
+
+.syntax-choices button[aria-checked='true'] {
+  box-shadow:
+    0 0 0 2px var(--c-bg),
+    0 0 0 3.5px var(--c-fg);
+}
+
+.syntax-toggles {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 1rem;
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+}
+
+.syntax-toggles label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+}
+
+.syntax-toggles input {
+  accent-color: var(--c-blue);
+}

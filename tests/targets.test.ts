@@ -89,3 +89,17 @@ test('iTerm2 colors round-trip from their 0-1 components', () => {
     expect(read('Ansi 15 Color')).toBe(ansi(preset).bright[7])
   }
 })
+
+test('syntax and italic overrides reach every editor target', () => {
+  const styled = { ...kanagawa, style: { syntax: { keyword: 'red' as const }, italicKeywords: false } }
+  const red = kanagawa.colors.red
+  const nvim = TARGETS.find((t) => t.id === 'neovim')!.render(styled, 'x')
+  expect(nvim).toContain('Keyword = { fg = c.red }')
+  const vs = colorTheme(styled).tokenColors.find((r) => r.name === 'keyword')!
+  expect(vs.settings).toEqual({ foreground: red, fontStyle: '' })
+  const zed = JSON.parse(TARGETS.find((t) => t.id === 'zed')!.render(styled, 'x'))
+  expect(zed.themes[0].style.syntax.keyword).toEqual({ color: red })
+  const helix = Bun.TOML.parse(TARGETS.find((t) => t.id === 'helix')!.render(styled, 'x')) as Record<string, unknown>
+  expect(helix.keyword).toEqual({ fg: 'red' })
+  expect(TARGETS.find((t) => t.id === 'bat')!.render(styled, 'x')).toContain(`<string>${red}</string>`)
+})

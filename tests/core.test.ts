@@ -76,3 +76,21 @@ describe('share links', () => {
     expect(decodeShare(bad)).toBeNull()
   })
 })
+
+describe('style overrides', () => {
+  const styled = {
+    ...PRESETS[0],
+    style: { syntax: { keyword: 'red' as const, string: 'cyan' as const }, italicComments: false },
+  }
+
+  test('share links carry them', () => {
+    expect(decodeShare(encodeShare(styled))).toEqual(styled)
+    expect(encodeShare(PRESETS[0])).not.toContain('s=')
+  })
+
+  test('parsePalette keeps valid overrides and drops junk', () => {
+    const parsed = parsePalette({ ...PRESETS[0], style: { syntax: { keyword: 'red', string: 'nope', bogus: 'blue' }, italicKeywords: 'yes' } })
+    expect(parsed.style).toEqual({ syntax: { keyword: 'red' } })
+    expect(parsePalette({ ...PRESETS[0], style: { syntax: {} } }).style).toBeUndefined()
+  })
+})

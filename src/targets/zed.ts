@@ -1,15 +1,15 @@
 import { isLight, mix, withAlphaHex } from '../core/color'
 import { ansi, derived, type Palette } from '../core/palette'
-import { SYNTAX, type TokenKind } from '../core/syntax'
+import { styleOf, type TokenKind } from '../core/syntax'
 import type { Target } from './types'
 
 const ANSI_NAMES = ['black', 'red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white']
 
 // Zed syntax names that map onto our token kinds
-const SYNTAX_KEYS: [string, TokenKind, 'italic'?][] = [
-  ['comment', 'comment', 'italic'],
-  ['comment.doc', 'comment', 'italic'],
-  ['keyword', 'keyword', 'italic'],
+const SYNTAX_KEYS: [string, TokenKind][] = [
+  ['comment', 'comment'],
+  ['comment.doc', 'comment'],
+  ['keyword', 'keyword'],
   ['function', 'function'],
   ['string', 'string'],
   ['string.escape', 'operator'],
@@ -32,10 +32,13 @@ function style(palette: Palette) {
   const { normal, bright } = ansi(palette)
   const panel = mix(c.bg, c.surface, 0.5)
 
+  const style = styleOf(palette)
+  const italic = (kind: TokenKind) =>
+    (kind === 'comment' && style.italicComments) || (kind === 'keyword' && style.italicKeywords)
   const syntax = Object.fromEntries(
-    SYNTAX_KEYS.map(([key, kind, italic]) => [
+    SYNTAX_KEYS.map(([key, kind]) => [
       key,
-      italic ? { color: c[SYNTAX[kind]], font_style: 'italic' } : { color: c[SYNTAX[kind]] },
+      italic(kind) ? { color: c[style.syntax[kind]], font_style: 'italic' } : { color: c[style.syntax[kind]] },
     ]),
   )
   Object.assign(syntax, {
