@@ -197,6 +197,7 @@ reference:
 | lazygit | `~/.config/lazygit/themes/<name>.yml` | Add it to `LG_CONFIG_FILE` |
 | fzf | `~/.config/fzf/themes/<name>.sh` | `source` it from `~/.zshrc` |
 | btop | `~/.config/btop/themes/<name>.theme` | `color_theme = "<name>"` in `btop.conf` |
+| fish | `~/.config/fish/themes/<name>.theme` | `fish_config theme choose <name>` in `config.fish` |
 
 `<name>` is your theme's name in lowercase with dashes: `Quiet Harbor` becomes
 `quiet-harbor`.

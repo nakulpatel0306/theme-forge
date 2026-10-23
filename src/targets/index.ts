@@ -2,6 +2,7 @@ import { alacritty } from './alacritty'
 import { bat } from './bat'
 import { btop } from './btop'
 import { delta } from './delta'
+import { fish } from './fish'
 import { fzf } from './fzf'
 import { ghostty } from './ghostty'
 import { helix } from './helix'
@@ -38,4 +39,5 @@ export const TARGETS: Target[] = [
   lazygit,
   fzf,
   btop,
+  fish,
 ]

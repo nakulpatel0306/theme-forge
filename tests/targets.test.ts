@@ -8,8 +8,8 @@ import { colorTheme, vscode } from '../src/targets/vscode'
 const kanagawa = PRESETS[0]
 
 describe.each(TARGETS.map((t) => [t.id, t] as const))('%s', (_, target) => {
-  // iTerm2 stores colors as 0-1 components; it gets its own test below
-  test.skipIf(target.id === 'iterm2')('renders every preset using the palette', () => {
+  // iTerm2 stores colors as 0-1 components and fish as bare hex; they get their own tests below
+  test.skipIf(target.id === 'iterm2' || target.id === 'fish')('renders every preset using the palette', () => {
     for (const preset of PRESETS) {
       const out = target.render(preset, slugify(preset.name))
       const { normal, bright } = ansi(preset)
@@ -90,6 +90,20 @@ test('iTerm2 colors round-trip from their 0-1 components', () => {
   }
 })
 
+test('fish theme lines are variables set to bare hex and set_color flags', () => {
+  const fish = TARGETS.find((t) => t.id === 'fish')!
+  for (const preset of PRESETS) {
+    const out = fish.render(preset, 'x')
+    expect(out).toContain(`# preferred_background: ${preset.colors.bg.slice(1)}`)
+    expect(out).toContain(`fish_color_error ${preset.colors.red.slice(1)}`)
+    expect(out).toContain(`fish_color_user ${preset.colors.blue.slice(1)}`)
+    expect(out).not.toContain('#' + preset.colors.red.slice(1))
+    for (const line of out.split('\n').filter((l) => l && !l.startsWith('#'))) {
+      expect(line).toMatch(/^fish_(pager_)?color_[a-z_]+( ([0-9a-f]{6}|--[a-z]+(=[0-9a-f]{6})?))+$/)
+    }
+  }
+})
+
 test('syntax and italic overrides reach every editor target', () => {
   const styled = { ...kanagawa, style: { syntax: { keyword: 'red' as const }, italicKeywords: false } }
   const red = kanagawa.colors.red
@@ -102,4 +116,5 @@ test('syntax and italic overrides reach every editor target', () => {
   const helix = Bun.TOML.parse(TARGETS.find((t) => t.id === 'helix')!.render(styled, 'x')) as Record<string, unknown>
   expect(helix.keyword).toEqual({ fg: 'red' })
   expect(TARGETS.find((t) => t.id === 'bat')!.render(styled, 'x')).toContain(`<string>${red}</string>`)
+  expect(TARGETS.find((t) => t.id === 'fish')!.render(styled, 'x')).toContain(`fish_color_keyword ${red.slice(1)}\n`)
 })
