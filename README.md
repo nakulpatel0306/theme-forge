@@ -33,26 +33,26 @@ bun dev
 
 ![The editor: presets and generators on the left, a live tmux and Neovim preview on the right](docs/screenshot.png)
 
-- Start from a preset or a community theme, or bring your current one:
-  **Open a theme file** or **Paste a theme** reads Ghostty, Kitty, Alacritty,
-  WezTerm, iTerm2 and Xresources themes, and `palette.json`.
-- **Generate** a palette from one color, from a wallpaper or screenshot you
-  drop in, or press **Space** to shuffle. Lock any color you like first and
-  generators leave it alone.
-- The preview switches between a **Terminal** (tmux, Neovim, shell), a
-  **VS Code** window and **lazygit**, and can simulate red-, green- and
-  blue-blind vision so you can check your diff colors still read.
-- Click a swatch or type a hex value; the whole app, preview included, repaints
-  as you go. The number next to each color is its contrast against the
-  background. Below 3:1 (4.5:1 for text) it turns into a **Fix** button that
-  lightens or darkens the color just enough, keeping its hue.
-- **Syntax** picks which color keywords, strings, functions and the rest get,
-  and whether comments and keywords are italic. Every editor export follows it.
-- Rename the theme by editing the big title. **Undo** and **Redo** (⌘Z, ⇧⌘Z)
-  cover every change.
-- **Use it** shows the file for each tool, where it goes, and the line that
-  turns it on. Download one, or all of them as a zip.
-- The URL always holds the current palette, so copying it shares your theme.
+Start from a preset or a community theme, or bring your current one: **Open a
+theme file** or **Paste a theme** reads Ghostty, Kitty, Alacritty, WezTerm,
+iTerm2 and Xresources themes, and `palette.json`. You can also **Generate** a
+palette from one color or from a wallpaper you drop in, or press **Space** to
+shuffle. Lock the colors you like first and generators leave them alone.
+
+Click a swatch or type a hex value and the whole app repaints as you go. The
+number next to each color is its contrast against the background; below 3:1
+(4.5:1 for text) it turns into a **Fix** button that lightens or darkens the
+color just enough, keeping its hue. **Syntax** picks which color keywords,
+strings, functions and the rest get, and whether comments and keywords are
+italic. The preview switches between a **Terminal** (tmux, Neovim, shell), a
+**VS Code** window and **lazygit**, and can simulate red-, green- and
+blue-blind vision so you can check your diff colors still read.
+
+When it looks right, **Use it** shows the file for each tool, where it goes,
+and the line that turns it on. Download one, or all of them as a zip. Rename
+the theme by editing the big title; **Undo** and **Redo** (⌘Z, ⇧⌘Z) cover
+every change. The URL always holds the current palette, so copying it shares
+your theme.
 
 ## Live sync
 
