@@ -67,18 +67,51 @@
 }
 
 @media (max-width: 52rem) {
+  /* On a phone the export panel goes last, so the presets sit right under
+     the preview instead of below every exported file */
   .app {
     grid-template-columns: minmax(0, 1fr);
     grid-template-areas:
       'top'
-      'stage'
-      'side';
+      'preview'
+      'side'
+      'export';
     height: auto;
+  }
+
+  /* The buttons leave no room beside the title, so it gets its own row */
+  .topbar {
+    flex-wrap: wrap;
+    row-gap: 0.6rem;
+  }
+
+  .theme-name {
+    order: 1;
+    flex-basis: 100%;
+  }
+
+  .stage {
+    display: contents;
+  }
+
+  .stage > .preview {
+    grid-area: preview;
+    width: 100%;
+    padding: 1.5rem 1.1rem 0;
+  }
+
+  .stage > .export {
+    grid-area: export;
+    width: 100%;
+    margin-top: 0;
+    padding: 1.75rem 1.1rem 2rem;
+    border-top: 1px solid var(--c-surface);
   }
 
   .sidebar {
     border-right: 0;
     border-top: 1px solid var(--c-surface);
+    padding: 1.75rem 1.1rem 2rem;
   }
 }
 
