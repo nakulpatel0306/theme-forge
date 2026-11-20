@@ -1,17 +1,40 @@
-# theme-forge
+# Theme Forge - One Palette For Every Dev Tool
 
 Pick twelve colors once. Get matching themes for your terminal, editor, and
 command-line tools.
 
 **[Try it in your browser](https://nakulpatel0306.github.io/theme-forge/)** · **[Read the guide](docs/GUIDE.md)**
 
-![theme-forge switching between themes, shuffling palettes, and previewing them in a terminal, VS Code and lazygit](docs/demo.gif)
+![Theme Forge switching between themes, shuffling palettes, and previewing them in a terminal, VS Code and lazygit](docs/demo.gif)
 
 Making every tool match by hand means editing a dozen config files, each in a
-different format. theme-forge gives you one palette, a live preview of a real
+different format. Theme Forge gives you one palette, a live preview of a real
 looking tmux + Neovim + shell session, and an export for each tool.
 
-## Supported tools
+## At a Glance
+
+- **Stack:** TypeScript, React, Vite, Bun (CLI, live sync server and tests), fflate for zip
+  and `.vsix` files, GitHub Actions + Pages
+- **Platforms:** the web app runs in any browser; the CLI and live sync run locally on Bun
+- **State:** Complete (1.1.0), and open to new themes and tool targets
+
+## Features
+
+- **19 tools from one palette:** terminals, editors and CLI tools, each as a standalone
+  theme file, plus a real VS Code / Cursor extension
+- **Live preview:** a terminal (tmux, Neovim, shell), a VS Code window and lazygit, with
+  color-blindness simulation
+- **Import what you have:** Ghostty, Kitty, Alacritty, WezTerm, iTerm2 and Xresources
+  themes, or a `palette.json`
+- **Generators:** build a palette from one color or a wallpaper, or shuffle, with locked
+  colors left alone
+- **Contrast fixes:** every color shows its contrast ratio and a one-click fix below 3:1
+  (4.5:1 for text)
+- **Live sync:** running Neovim, tmux and Ghostty recolor as you drag
+- **CLI:** list, preview, export, convert and install themes from the terminal
+- **Shareable URLs:** the link always holds the current palette
+
+## Supported Tools
 
 | Kind      | Tools                                                |
 | --------- | ---------------------------------------------------- |
@@ -19,17 +42,12 @@ looking tmux + Neovim + shell session, and an export for each tool.
 | Editors   | Neovim, VS Code, Cursor, Zed, Helix                  |
 | CLI tools | bat, delta, tmux, Starship, lazygit, fzf, btop, fish |
 
-Every export is a standalone theme file. theme-forge never edits your main
+Every export is a standalone theme file. Theme Forge never edits your main
 config, so switching a theme on is always a single line you add yourself.
 VS Code and Cursor get a real extension (`.vsix`); `apply` installs it into
 whichever of the two you have.
 
-## Use the web app
-
-```sh
-bun install
-bun dev
-```
+## Using the Web App
 
 ![The editor: presets and generators on the left, a live tmux and Neovim preview on the right](docs/screenshot.png)
 
@@ -54,7 +72,7 @@ the theme by editing the big title; **Undo** and **Redo** (⌘Z, ⇧⌘Z) cover
 every change. The URL always holds the current palette, so copying it shares
 your theme.
 
-## Live sync
+## Live Sync
 
 ```sh
 bun cli/index.ts live
@@ -71,7 +89,7 @@ Press Ctrl+C and Neovim and tmux go back to exactly what they were. The live
 server only listens on `127.0.0.1` and refuses connections from any page other
 than the editor itself.
 
-## Use the CLI
+## Using the CLI
 
 ```sh
 bun cli/index.ts list                              # presets and tools
@@ -83,7 +101,7 @@ bun cli/index.ts export ~/.config/kitty/theme.conf --only ghostty  # convert Kit
 ```
 
 Anywhere a theme goes, you can pass a preset name, a community theme name, a
-`palette.json`, or any terminal theme file theme-forge can import.
+`palette.json`, or any terminal theme file Theme Forge can import.
 
 `bun run cli <command>` works too, e.g. `bun run cli list`.
 
@@ -91,7 +109,7 @@ Anywhere a theme goes, you can pass a preset name, a community theme name, a
 and its contents changed, the old one is kept next to it as `<name>.bak-<time>`.
 Limit any command to some tools with `--only ghostty,neovim,tmux`.
 
-## How the palette works
+## How the Palette Works
 
 | Slot       | Used for                         |
 | ---------- | -------------------------------- |
@@ -114,26 +132,68 @@ backgrounds, and the cursor line, are derived from these twelve in
 color lives in one map, [`src/core/syntax.ts`](src/core/syntax.ts), shared by
 the preview and the editor exports, so the preview shows what you'll get.
 
-## Share a theme
+## Project Structure
+
+```
+.
+├── src/
+│   ├── core/              # Palette logic shared by the web app and CLI
+│   │   ├── palette.ts     # The twelve slots and every color derived from them
+│   │   ├── syntax.ts      # Which syntax token gets which color
+│   │   ├── generate.ts    # Seed-color and shuffle generators, contrast fixes
+│   │   ├── importTheme.ts # Reads Ghostty, Kitty, Alacritty, WezTerm, iTerm2, Xresources
+│   │   ├── oklch.ts       # Perceptual color math
+│   │   ├── presets.ts     # Built-in presets
+│   │   └── share.ts       # Palette <-> URL encoding
+│   ├── targets/           # One file per tool; bundle.ts collects every file
+│   ├── ui/                # React editor, export panel and preview scenes
+│   └── App.tsx
+├── cli/
+│   ├── index.ts           # Command parsing: list, preview, export, apply, live
+│   ├── commands.ts        # What each command does
+│   ├── editors.ts         # Finds VS Code / Cursor and installs the extension
+│   ├── resolve.ts         # Turns a preset, community theme or file into a palette
+│   └── live/              # Live sync server and Neovim / tmux / Ghostty reloads
+├── themes/                # Community themes (palette.json files)
+├── tests/                 # Unit, target snapshot, CLI and live sync tests
+└── docs/                  # GUIDE.md and screenshots
+```
+
+## Running Locally
+
+Needs [Bun](https://bun.sh).
+
+1. Clone the repo:
+   ```sh
+   git clone https://github.com/nakulpatel0306/theme-forge.git
+   cd theme-forge
+   ```
+2. Install and start the web app:
+   ```sh
+   bun install
+   bun dev
+   ```
+3. Run the checks:
+   ```sh
+   bun test         # unit tests, snapshot tests for every target, CLI tests
+   bun run build    # typecheck and production build
+   bun run lint
+   ```
+
+## Contributing
+
+### Share a theme
 
 Drop a `palette.json` (from **Download palette.json**) into [`themes/`](themes),
 named after the theme (`themes/my-theme.json`), add an `"author"` field, and
 open a pull request. It shows up under **From the community** in the app and
 by name in the CLI. CI checks that it loads and that its text is readable.
 
-## Add a tool
+### Add a tool
 
 Each tool is one small file in [`src/targets`](src/targets). See
 [CONTRIBUTING.md](CONTRIBUTING.md); a new target is usually about 30 lines.
 
-## Development
-
-```sh
-bun test         # unit tests, snapshot tests for every target, CLI tests
-bun run build    # typecheck and production build
-bun run lint
-```
-
 ## License
 
-[MIT](LICENSE)
+MIT, see [LICENSE](LICENSE).
